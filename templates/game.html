@@ -83,23 +83,33 @@
         game_area <= game_over_msg
 
         # --- 遊戲核心邏輯 ---
+def move_ball():
+    global is_black
 
-        def move_target():
-            """移動目標元素"""
-            if not game_active:
-                return
-            
-            max_x = game_area.clientWidth - 50
-            max_y = game_area.clientHeight - 50
-            min_y = 40 
+    if not game_active:
+        return
 
-            new_x = random.randint(0, max(0, max_x))
-            new_y = random.randint(min_y, max(min_y, max_y))
-            
-            target.style.backgroundColor = f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
-            
-            target.style.left = f"{new_x}px"
-            target.style.top = f"{new_y}px"
+    x = random.randint(0, game.clientWidth - 50)
+    y = random.randint(40, game.clientHeight - 50)
+
+    r = random.random()
+
+    if r < 0.2:
+        ball.style.backgroundColor = "black"
+        is_black = True
+    elif r < 0.35:
+        ball.style.backgroundColor = "red"
+        is_black = False
+    else:
+        ball.style.backgroundColor = (
+            f"rgb({random.randint(0,255)},"
+            f"{random.randint(0,255)},"
+            f"{random.randint(0,255)})"
+        )
+        is_black = False
+
+    ball.style.left = f"{x}px"
+    ball.style.top = f"{y}px"
 
         @target.bind("click")
         def hit_target(event):
