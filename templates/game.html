@@ -127,6 +127,24 @@ def hit(event):
         move_ball()
         return
 
+    # 紅色球：加速（已變溫和）
+    if ball.style.backgroundColor == "red":
+        MOVE_INTERVAL = max(MIN_INTERVAL, MOVE_INTERVAL - SPEED_UP)
+        timer.clear_interval(interval_handle)
+        interval_handle = timer.set_interval(move_ball, MOVE_INTERVAL)
+
+    # Combo 計算
+    now = time.time()
+    if now - last_hit_time <= 1:
+        combo += 1
+    else:
+        combo = 0
+    last_hit_time = now
+
+    score += 1 + combo
+    update_ui()
+    move_ball()
+        
         @target.bind("click")
         def hit_target(event):
             """點擊目標時觸發 (已經是「點擊圓圈內」的檢測)"""
