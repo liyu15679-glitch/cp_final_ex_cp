@@ -111,6 +111,22 @@ def move_ball():
     ball.style.left = f"{x}px"
     ball.style.top = f"{y}px"
 
+@ball.bind("click")
+def hit(event):
+    global score, combo, last_hit_time
+    global MOVE_INTERVAL, interval_handle
+
+    if not game_active:
+        return
+
+    # 黑色球：扣分
+    if is_black:
+        score -= 5
+        combo = 0
+        update_ui()
+        move_ball()
+        return
+
         @target.bind("click")
         def hit_target(event):
             """點擊目標時觸發 (已經是「點擊圓圈內」的檢測)"""
